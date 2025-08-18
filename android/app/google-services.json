@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1041354935724",
+    "project_id": "who-is-the-killer-ai",
+    "storage_bucket": "who-is-the-killer-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041354935724:android:4a9a3f1f9b9420e693be09",
+        "android_client_info": {
+          "package_name": "com.laplaceapps.who_is_the_killer_ai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJP3ZmChDAR0520eHdKUgTPFzPzRJOSpQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

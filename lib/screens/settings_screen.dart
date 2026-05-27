@@ -61,14 +61,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               }
                             },
                           );
-                        }).toList(),
+                        }),
                       ],
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // İstatistikleri Sıfırla
                 Card(
                   child: Padding(
@@ -98,9 +98,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Hakkında
                 Card(
                   child: Padding(

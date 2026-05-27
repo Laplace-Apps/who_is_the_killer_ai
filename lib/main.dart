@@ -5,7 +5,8 @@ import 'firebase_options.dart';
 import 'providers/game_provider.dart';
 import 'providers/language_provider.dart';
 import 'screens/home_screen.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'screens/authentication_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -52,7 +53,8 @@ class MyApp extends StatelessWidget {
               ),
               useMaterial3: true,
             ),
-            home: const HomeScreen(),
+                // For testing: start directly on Authentication screen
+                home: const AuthenticationScreen(),
             debugShowCheckedModeBanner: false,
           );
         },

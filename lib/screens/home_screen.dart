@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/game_provider.dart';
 import '../providers/language_provider.dart';
-import '../data/game_data.dart';
 import 'game_screen.dart';
 import 'settings_screen.dart';
 
@@ -35,7 +35,11 @@ class HomeScreen extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFF1a1a2e), Color(0xFF16213e), Color(0xFF0f3460)],
+                colors: [
+                  Color(0xFF1a1a2e),
+                  Color(0xFF16213e),
+                  Color(0xFF0f3460),
+                ],
               ),
             ),
             child: SafeArea(
@@ -75,7 +79,9 @@ class HomeScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.white.withOpacity(0.2)),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.2),
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +115,9 @@ class HomeScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.white.withOpacity(0.2)),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.2),
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,10 +155,11 @@ class HomeScreen extends StatelessWidget {
                             context,
                             listen: false,
                           );
-                          final languageProvider = Provider.of<LanguageProvider>(
-                            context,
-                            listen: false,
-                          );
+                          final languageProvider =
+                              Provider.of<LanguageProvider>(
+                                context,
+                                listen: false,
+                              );
                           await gameProvider.startNewGame(languageProvider);
                           if (context.mounted) {
                             Navigator.of(context).pushReplacement(

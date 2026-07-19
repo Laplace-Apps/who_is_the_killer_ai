@@ -1,15 +1,28 @@
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
-import '../models/game_state.dart';
-import '../models/character.dart';
 import '../data/game_data.dart';
-import '../services/ai_chat_service.dart';
-import '../services/firebase_service.dart';
+import '../models/character.dart';
+import '../models/game_state.dart';
 import '../providers/language_provider.dart';
+import '../services/ai_chat_service.dart';
+import '../services/game_persistence.dart';
 
 class GameProvider with ChangeNotifier {
+  factory GameProvider({
+    CharacterChatService chatService = const LocalMockCharacterChatService(),
+    GamePersistence? gamePersistence,
+  }) {
+    return GameProvider._(
+      chatService,
+      gamePersistence ?? FirebaseGamePersistence(),
+    );
+  }
+
+  GameProvider._(this._chatService, this._gamePersistence);
+
+  final CharacterChatService _chatService;
+  final GamePersistence _gamePersistence;
+
   GameState? _gameState;
   Character? _currentCharacter;
   List<String> _currentConversation = [];
@@ -23,9 +36,6 @@ class GameProvider with ChangeNotifier {
 
   // Oyunu başlat
   Future<void> startNewGame(LanguageProvider languageProvider) async {
-    // Firebase'e anonim giriş yap
-    await FirebaseService.signInAnonymously();
-
     _gameState = GameData.createNewGame(languageProvider.currentLanguage);
     _currentCharacter = null;
     _currentConversation = [];
@@ -61,7 +71,7 @@ class GameProvider with ChangeNotifier {
 
     try {
       // AI yanıtını al
-      final response = await AIChatService.getCharacterResponse(
+      final response = await _chatService.getCharacterResponse(
         _currentCharacter!,
         message,
         _gameState!.storyDescription,
@@ -107,7 +117,7 @@ class GameProvider with ChangeNotifier {
           .map((conv) => conv.length)
           .fold(0, (sum, length) => sum + length);
 
-      await FirebaseService.saveGameStats(
+      await _gamePersistence.saveGameStats(
         isCorrect: isCorrectGuess(),
         selectedCharacter: selectedCharacter.name,
         realKiller: realKiller?.name ?? 'Bilinmiyor',
@@ -124,12 +134,7 @@ class GameProvider with ChangeNotifier {
     if (_gameState == null) return;
 
     try {
-      // Yerel depolama
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('gameState', jsonEncode(_gameState!.toJson()));
-
-      // Firebase'e kaydet
-      await FirebaseService.saveGameState(_gameState!);
+      await _gamePersistence.saveGameState(_gameState!);
     } catch (e) {
       print('Oyun kaydedilemedi: $e');
     }
@@ -138,20 +143,9 @@ class GameProvider with ChangeNotifier {
   // Oyunu yükle
   Future<void> loadGameState() async {
     try {
-      // Önce Firebase'den yüklemeyi dene
-      GameState? firebaseGameState = await FirebaseService.loadGameState();
-
-      if (firebaseGameState != null) {
-        _gameState = firebaseGameState;
-      } else {
-        // Firebase'de yoksa yerel depolamadan yükle
-        final prefs = await SharedPreferences.getInstance();
-        final gameStateJson = prefs.getString('gameState');
-
-        if (gameStateJson != null) {
-          final gameStateMap = jsonDecode(gameStateJson);
-          _gameState = GameState.fromJson(gameStateMap);
-        }
+      final savedGameState = await _gamePersistence.loadGameState();
+      if (savedGameState != null) {
+        _gameState = savedGameState;
       }
 
       // Eğer mevcut bir karakter seçiliyse, onun konuşma geçmişini yükle
@@ -170,8 +164,7 @@ class GameProvider with ChangeNotifier {
   // Oyunu sıfırla
   Future<void> resetGame() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.remove('gameState');
+      await _gamePersistence.clearGameState();
       _gameState = null;
       _currentCharacter = null;
       _currentConversation = [];
@@ -198,7 +191,6 @@ class GameProvider with ChangeNotifier {
   }
 
   // Kullanıcı istatistiklerini al
-  Future<Map<String, dynamic>> getUserStats() async {
-    return await FirebaseService.getUserStats();
-  }
+  Future<Map<String, dynamic>> getUserStats() =>
+      _gamePersistence.getUserStats();
 }

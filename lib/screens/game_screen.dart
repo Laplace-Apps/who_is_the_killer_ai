@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../data/game_data.dart';
+import '../models/game_state.dart';
 import '../providers/game_provider.dart';
 import '../providers/language_provider.dart';
-import '../models/character.dart';
-import '../models/game_state.dart';
-import '../data/game_data.dart';
 import '../widgets/character_card.dart';
 import '../widgets/chat_widget.dart';
 import '../widgets/decision_dialog.dart';
@@ -18,15 +18,6 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   final TextEditingController _messageController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    // Oyun durumunu yükle
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<GameProvider>(context, listen: false).loadGameState();
-    });
-  }
 
   @override
   void dispose() {

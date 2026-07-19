@@ -1,9 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'home_screen.dart';
+import 'package:flutter/material.dart';
+
+import '../services/auth_service.dart';
 
 class AuthenticationScreen extends StatefulWidget {
-  const AuthenticationScreen({super.key});
+  const AuthenticationScreen({super.key, required this.authService});
+
+  final AuthService authService;
 
   @override
   State<AuthenticationScreen> createState() => _AuthenticationScreenState();
@@ -12,7 +15,6 @@ class AuthenticationScreen extends StatefulWidget {
 class _AuthenticationScreenState extends State<AuthenticationScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool _isSignUp = false;
   bool _isLoading = false;
@@ -33,34 +35,32 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
     try {
       if (_isSignUp) {
-        await _auth.createUserWithEmailAndPassword(
+        await widget.authService.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
       } else {
-        await _auth.signInWithEmailAndPassword(
+        await widget.authService.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
       }
-
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-        );
-      }
     } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
       setState(() {
         _errorMessage = _getErrorMessage(e.code);
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _errorMessage = 'Bir hata oluştu: $e';
       });
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -132,7 +132,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     fillColor: Colors.white.withOpacity(0.1),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.white.withOpacity(0.2)),
+                      borderSide: BorderSide(
+                        color: Colors.white.withOpacity(0.2),
+                      ),
                     ),
                   ),
                   style: const TextStyle(color: Colors.white),
@@ -151,7 +153,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     fillColor: Colors.white.withOpacity(0.1),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.white.withOpacity(0.2)),
+                      borderSide: BorderSide(
+                        color: Colors.white.withOpacity(0.2),
+                      ),
                     ),
                   ),
                   style: const TextStyle(color: Colors.white),

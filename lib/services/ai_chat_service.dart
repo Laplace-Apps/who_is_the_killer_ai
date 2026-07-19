@@ -1,115 +1,44 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import '../models/character.dart';
 
-class AIChatService {
-  // Google AI (Gemini) API için yapılandırma
-  static const String _baseUrl =
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
-  static const String _apiKey =
-      'AIzaSyDxAMgTOUcyd4OVnbn2QBjFNSm2o9qpJR4'; // Gerçek uygulamada environment variable kullanın
+abstract interface class CharacterChatService {
+  Future<String> getCharacterResponse(
+    Character character,
+    String userMessage,
+    String gameContext,
+    String languageCode,
+  );
+}
 
-  static Future<String> getCharacterResponse(
+/// Non-production responder used until Firebase AI Logic is available.
+class LocalMockCharacterChatService implements CharacterChatService {
+  const LocalMockCharacterChatService();
+
+  @override
+  Future<String> getCharacterResponse(
     Character character,
     String userMessage,
     String gameContext,
     String languageCode,
   ) async {
-    try {
-      // Eğer API key yoksa, geliştirilmiş simüle edilmiş yanıtlar kullan
-      if (_apiKey == 'YOUR_GEMINI_API_KEY') {
-        return _getDynamicSimulatedResponse(character, userMessage);
-      }
-
-      // Karakter için özel prompt oluştur
-      final languageInstruction = languageCode == 'en'
-          ? 'Answer in English'
-          : 'Türkçe cevap ver';
-
-      final systemPrompt =
-          '''
-Sen ${character.name} karakterisin. ${character.fullDescription}
-
-Oyun bağlamı: $gameContext
-
-Karakterin olarak cevap ver. Eğer katil değilsen, masum olduğunu savun. 
-Eğer katilsen, suçunu gizlemeye çalış ama çok belirgin olmasın.
-Karakterinin kişiliğine uygun konuş: ${character.personality}
-
-Önemli kurallar:
-1. Her zaman karakterinin perspektifinden konuş
-2. Kısa ve doğal cevaplar ver (maksimum 2-3 cümle)
-3. Karakterinin kişiliğine uygun dil kullan
-4. Eğer katilsen, suçunu gizlemeye çalış
-5. Eğer masumsan, masumiyetini savun
-6. $languageInstruction
-7. Her seferinde farklı bir yanıt ver, aynı cevabı tekrarlama
-
-Kullanıcı mesajı: $userMessage
-
-Karakter olarak cevap ver:
-''';
-
-      final response = await http.post(
-        Uri.parse('$_baseUrl?key=$_apiKey'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'contents': [
-            {
-              'parts': [
-                {'text': systemPrompt},
-              ],
-            },
-          ],
-          'generationConfig': {'temperature': 0.9, 'maxOutputTokens': 150},
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        if (data['candidates'] != null &&
-            data['candidates'].isNotEmpty &&
-            data['candidates'][0]['content'] != null &&
-            data['candidates'][0]['content']['parts'] != null &&
-            data['candidates'][0]['content']['parts'].isNotEmpty) {
-          return data['candidates'][0]['content']['parts'][0]['text'];
-        } else {
-          print('Google AI yanıt formatı beklenmiyor: ${response.body}');
-          return _getDynamicSimulatedResponse(character, userMessage);
-        }
-      } else {
-        print(
-          'Google AI API hatası: ${response.statusCode} - ${response.body}',
-        );
-        return _getDynamicSimulatedResponse(character, userMessage);
-      }
-    } catch (e) {
-      print('AI API hatası: $e');
-      return _getDynamicSimulatedResponse(character, userMessage);
-    }
+    return _getDynamicSimulatedResponse(character, userMessage);
   }
 
-  static String _getDynamicSimulatedResponse(
-    Character character,
-    String userMessage,
-  ) {
+  String _getDynamicSimulatedResponse(Character character, String userMessage) {
     final message = userMessage.toLowerCase();
     final responses = _getCharacterResponses(character, message);
 
-    // Rastgele bir yanıt seç
     if (responses.isNotEmpty) {
-      final randomIndex =
-          DateTime.now().millisecondsSinceEpoch % responses.length;
-      return responses[randomIndex];
+      final responseIndex = [
+        ...character.name.codeUnits,
+        ...message.codeUnits,
+      ].fold<int>(0, (sum, value) => sum + value);
+      return responses[responseIndex % responses.length];
     }
 
     return _getGeneralResponse(character, message);
   }
 
-  static List<String> _getCharacterResponses(
-    Character character,
-    String message,
-  ) {
+  List<String> _getCharacterResponses(Character character, String message) {
     if (character.name.contains('Prof. Dr. Ahmet Yılmaz')) {
       return _getProfessorResponses(character, message);
     } else if (character.name.contains('Ayşe Kaya')) {
@@ -121,10 +50,7 @@ Karakter olarak cevap ver:
     return [];
   }
 
-  static List<String> _getProfessorResponses(
-    Character character,
-    String message,
-  ) {
+  List<String> _getProfessorResponses(Character character, String message) {
     if (character.isKiller) {
       if (message.contains('nerede') ||
           message.contains('neredeydin') ||
@@ -193,10 +119,7 @@ Karakter olarak cevap ver:
     ];
   }
 
-  static List<String> _getHousewifeResponses(
-    Character character,
-    String message,
-  ) {
+  List<String> _getHousewifeResponses(Character character, String message) {
     if (character.isKiller) {
       if (message.contains('nerede') ||
           message.contains('neredeydin') ||
@@ -265,10 +188,7 @@ Karakter olarak cevap ver:
     ];
   }
 
-  static List<String> _getSecurityGuardResponses(
-    Character character,
-    String message,
-  ) {
+  List<String> _getSecurityGuardResponses(Character character, String message) {
     if (character.isKiller) {
       if (message.contains('nerede') ||
           message.contains('neredeydin') ||
@@ -337,7 +257,7 @@ Karakter olarak cevap ver:
     ];
   }
 
-  static String _getGeneralResponse(Character character, String message) {
+  String _getGeneralResponse(Character character, String message) {
     if (message.contains('merhaba') || message.contains('selam')) {
       return 'Merhaba, ben ${character.name}. Size nasıl yardım edebilirim?';
     } else if (message.contains('kimsin') || message.contains('kim')) {

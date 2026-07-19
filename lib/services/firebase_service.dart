@@ -3,21 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../models/game_state.dart';
 
 class FirebaseService {
-  static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseService({FirebaseFirestore? firestore, FirebaseAuth? firebaseAuth})
+    : _firestore = firestore ?? FirebaseFirestore.instance,
+      _auth = firebaseAuth ?? FirebaseAuth.instance;
 
-  // Kullanıcı kimlik doğrulama
-  static Future<UserCredential?> signInAnonymously() async {
-    try {
-      return await _auth.signInAnonymously();
-    } catch (e) {
-      print('Anonim giriş hatası: $e');
-      return null;
-    }
-  }
+  final FirebaseFirestore _firestore;
+  final FirebaseAuth _auth;
 
   // Oyun durumunu Firebase'e kaydet
-  static Future<void> saveGameState(GameState gameState) async {
+  Future<void> saveGameState(GameState gameState) async {
     try {
       final user = _auth.currentUser;
       if (user != null) {
@@ -34,7 +28,7 @@ class FirebaseService {
   }
 
   // Oyun durumunu Firebase'den yükle
-  static Future<GameState?> loadGameState() async {
+  Future<GameState?> loadGameState() async {
     try {
       final user = _auth.currentUser;
       if (user != null) {
@@ -55,8 +49,24 @@ class FirebaseService {
     return null;
   }
 
+  Future<void> deleteGameState() async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        await _firestore
+            .collection('users')
+            .doc(user.uid)
+            .collection('games')
+            .doc('current_game')
+            .delete();
+      }
+    } catch (e) {
+      print('Oyun durumu silinemedi: $e');
+    }
+  }
+
   // Oyun istatistiklerini kaydet
-  static Future<void> saveGameStats({
+  Future<void> saveGameStats({
     required bool isCorrect,
     required String selectedCharacter,
     required String realKiller,
@@ -85,7 +95,7 @@ class FirebaseService {
   }
 
   // Kullanıcının oyun istatistiklerini al
-  static Future<Map<String, dynamic>> getUserStats() async {
+  Future<Map<String, dynamic>> getUserStats() async {
     try {
       final user = _auth.currentUser;
       if (user != null) {
@@ -126,21 +136,4 @@ class FirebaseService {
     }
     return {};
   }
-
-  // Kullanıcı çıkış yap
-  static Future<void> signOut() async {
-    try {
-      await _auth.signOut();
-    } catch (e) {
-      print('Çıkış hatası: $e');
-    }
-  }
-
-  // Mevcut kullanıcıyı al
-  static User? getCurrentUser() {
-    return _auth.currentUser;
-  }
-
-  // Kullanıcı durumu değişikliklerini dinle
-  static Stream<User?> get authStateChanges => _auth.authStateChanges();
 }

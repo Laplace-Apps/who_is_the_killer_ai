@@ -409,3 +409,31 @@ accepted gameplay threshold.
 - Competitive scoring based on client-observed AI responses.
 - Shipping AI interrogation before server prompt template support passes the
   Flutter compatibility gate.
+
+## 10. 2D investigation layer (Flame)
+
+Implemented as an incremental Flame top-down layer inside the existing Flutter
+shell:
+
+- Entry: `HomeScreen` → `InvestigationScreen` (`GameWidget` + Flutter HUD).
+- Engine: `lib/game/investigation_game.dart` with rooms from
+  `assets/cases/whispering_observatory/map_layout.json`.
+- Sprites: 32px idle/walk sheets under `assets/images/characters/` via
+  `SpriteAnimationGroupComponent` (`lib/game/data/sprite_catalog.dart`).
+  Clue props (chest/barrel/lamp) from `assets/images/tiles/props.png`.
+- Movement: virtual joystick / WASD + tap-to-move via grid A*
+  (`lib/game/systems/pathfinding.dart`).
+- NPCs patrol via `npc_routes.json` + room culling
+  (`lib/game/systems/npc_schedule.dart`); tap opens interrogation bottom sheet
+  (existing `ChatWidget` / `GameProvider.chatWithCharacter`). World pauses during
+  chat, notebook, and accuse sheets.
+- Clue hotspots write to `GameState.discoveredClueIds`; notebook + accuse gate
+  require `clue_07`, `clue_10`, `clue_11`, `clue_17`. Catwalk / shaft rooms unlock
+  after `clue_07`.
+- Public case bundle: `case_public.json` via `CaseContentRepository`.
+- Client characters never ship `isKiller=true`. Accusation scoring uses
+  `AccusationService` (local mock for prototype; Cloud Function for production).
+- Interrogation: `FirebaseAiCharacterChatService` posts to
+  `--dart-define=INTERROGATE_FUNCTION_URL=...` when set; otherwise falls back to
+  `LocalMockCharacterChatService`. Contract:
+  `functions/interrogate_contract.ts`. Private case files remain server-side only.

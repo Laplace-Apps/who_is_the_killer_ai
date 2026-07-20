@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/game_provider.dart';
 import '../providers/language_provider.dart';
-import 'game_screen.dart';
+import 'investigation_screen.dart';
 import 'settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -77,10 +77,10 @@ class HomeScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.white.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withValues(alpha: 0.2),
                         ),
                       ),
                       child: Column(
@@ -113,10 +113,10 @@ class HomeScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.white.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withValues(alpha: 0.2),
                         ),
                       ),
                       child: Column(
@@ -164,7 +164,8 @@ class HomeScreen extends StatelessWidget {
                           if (context.mounted) {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                builder: (context) => const GameScreen(),
+                                builder: (context) =>
+                                    const InvestigationScreen(),
                               ),
                             );
                           }
@@ -201,7 +202,8 @@ class HomeScreen extends StatelessWidget {
                               onPressed: () {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (context) => const GameScreen(),
+                                    builder: (context) =>
+                                        const InvestigationScreen(),
                                   ),
                                 );
                               },

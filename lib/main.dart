@@ -7,9 +7,20 @@ import 'providers/game_provider.dart';
 import 'providers/language_provider.dart';
 import 'screens/authentication_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/walkthrough_screen.dart';
+import 'screens/welcome_screen.dart';
 import 'services/ai_chat_service.dart';
+import 'services/app_check_service.dart';
 import 'services/auth_service.dart';
 import 'services/game_persistence.dart';
+import 'services/onboarding_preferences.dart';
+import 'theme/mystery_theme.dart';
+
+/// Optional Cloud Function URL for server-side interrogation prompt assembly.
+/// Pass with: `--dart-define=INTERROGATE_FUNCTION_URL=https://...`
+const String kInterrogateFunctionUrl = String.fromEnvironment(
+  'INTERROGATE_FUNCTION_URL',
+);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,8 +29,9 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    await const FirebaseAppCheckService().activate();
   } catch (error, stackTrace) {
-    debugPrint('Firebase başlatma hatası: $error');
+    debugPrint('Firebase güvenlik başlatma hatası: $error');
     debugPrintStack(stackTrace: stackTrace);
     runApp(const FirebaseInitializationErrorApp());
     return;
@@ -29,11 +41,19 @@ void main() async {
   final languageProvider = LanguageProvider();
   await languageProvider.loadSavedLanguage();
 
+  final chatService = FirebaseAiCharacterChatService(
+    functionUrl: kInterrogateFunctionUrl.isEmpty
+        ? null
+        : kInterrogateFunctionUrl,
+  );
+
   runApp(
     MyApp(
       languageProvider: languageProvider,
       authService: FirebaseAuthService(),
       gamePersistence: FirebaseGamePersistence(),
+      onboardingPreferences: SharedPreferencesOnboardingPreferences(),
+      chatService: chatService,
     ),
   );
 }
@@ -44,12 +64,14 @@ class MyApp extends StatelessWidget {
     required this.languageProvider,
     required this.authService,
     required this.gamePersistence,
+    required this.onboardingPreferences,
     this.chatService = const LocalMockCharacterChatService(),
   });
 
   final LanguageProvider languageProvider;
   final AuthService authService;
   final GamePersistence gamePersistence;
+  final OnboardingPreferences onboardingPreferences;
   final CharacterChatService chatService;
 
   @override
@@ -69,14 +91,11 @@ class MyApp extends StatelessWidget {
         builder: (context, languageProvider, child) {
           return MaterialApp(
             title: languageProvider.t('app_title'),
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: const Color(0xFFe94560),
-                brightness: Brightness.dark,
-              ),
-              useMaterial3: true,
+            theme: MysteryTheme.dark(),
+            home: AuthGate(
+              authService: authService,
+              onboardingPreferences: onboardingPreferences,
             ),
-            home: AuthGate(authService: authService),
             debugShowCheckedModeBanner: false,
           );
         },
@@ -85,21 +104,84 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AuthGate extends StatelessWidget {
-  const AuthGate({super.key, required this.authService});
+enum _PreAuthDestination { welcome, signIn, signUp }
+
+class AuthGate extends StatefulWidget {
+  const AuthGate({
+    super.key,
+    required this.authService,
+    required this.onboardingPreferences,
+  });
 
   final AuthService authService;
+  final OnboardingPreferences onboardingPreferences;
+
+  @override
+  State<AuthGate> createState() => _AuthGateState();
+}
+
+class _AuthGateState extends State<AuthGate> {
+  late Future<bool> _onboardingCompleted;
+  _PreAuthDestination _destination = _PreAuthDestination.welcome;
+
+  @override
+  void initState() {
+    super.initState();
+    _onboardingCompleted = widget.onboardingPreferences.isCompleted();
+  }
+
+  void _completeWalkthrough() {
+    setState(() {
+      _onboardingCompleted = Future.value(true);
+      _destination = _PreAuthDestination.welcome;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
-      stream: authService.authenticationChanges,
-      initialData: authService.isAuthenticated,
+      stream: widget.authService.authenticationChanges,
+      initialData: widget.authService.isAuthenticated,
       builder: (context, snapshot) {
         if (snapshot.data ?? false) {
           return const AuthenticatedHome();
         }
-        return AuthenticationScreen(authService: authService);
+        return FutureBuilder<bool>(
+          future: _onboardingCompleted,
+          builder: (context, onboardingSnapshot) {
+            if (onboardingSnapshot.connectionState != ConnectionState.done) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
+
+            if (!(onboardingSnapshot.data ?? false)) {
+              return WalkthroughScreen(
+                preferences: widget.onboardingPreferences,
+                onCompleted: _completeWalkthrough,
+              );
+            }
+
+            if (_destination == _PreAuthDestination.welcome) {
+              return WelcomeScreen(
+                onSignIn: () {
+                  setState(() => _destination = _PreAuthDestination.signIn);
+                },
+                onCreateAccount: () {
+                  setState(() => _destination = _PreAuthDestination.signUp);
+                },
+              );
+            }
+
+            return AuthenticationScreen(
+              authService: widget.authService,
+              initialSignUp: _destination == _PreAuthDestination.signUp,
+              onBack: () {
+                setState(() => _destination = _PreAuthDestination.welcome);
+              },
+            );
+          },
+        );
       },
     );
   }
@@ -128,7 +210,8 @@ class _AuthenticatedHomeState extends State<AuthenticatedHome> {
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            backgroundColor: Color(0xFF0B121A),
+            body: SizedBox.expand(),
           );
         }
         return const HomeScreen();

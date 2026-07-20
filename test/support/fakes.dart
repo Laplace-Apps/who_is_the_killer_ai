@@ -6,20 +6,40 @@ import 'package:who_is_the_killer_ai/services/ai_chat_service.dart';
 import 'package:who_is_the_killer_ai/services/auth_service.dart';
 import 'package:who_is_the_killer_ai/services/firebase_service.dart';
 import 'package:who_is_the_killer_ai/services/game_persistence.dart';
+import 'package:who_is_the_killer_ai/services/onboarding_preferences.dart';
 
 class FakeAuthService implements AuthService {
-  FakeAuthService({bool authenticated = false, this.authenticationError})
-    : _isAuthenticated = authenticated;
+  FakeAuthService({
+    bool authenticated = false,
+    this.authenticationError,
+    this.socialAuthenticationError,
+    this.googleAvailable = false,
+    this.appleAvailable = false,
+    this.socialResult = AuthFlowResult.success,
+  }) : _isAuthenticated = authenticated;
 
   final Object? authenticationError;
+  final Object? socialAuthenticationError;
+  final bool googleAvailable;
+  final bool appleAvailable;
+  final AuthFlowResult socialResult;
   final _controller = StreamController<bool>.broadcast();
 
   bool _isAuthenticated;
   int signInCalls = 0;
   int signUpCalls = 0;
+  int resetPasswordCalls = 0;
+  int googleSignInCalls = 0;
+  int appleSignInCalls = 0;
 
   @override
   bool get isAuthenticated => _isAuthenticated;
+
+  @override
+  bool get isGoogleSignInAvailable => googleAvailable;
+
+  @override
+  bool get isAppleSignInAvailable => appleAvailable;
 
   @override
   Stream<bool> get authenticationChanges => _controller.stream;
@@ -31,6 +51,35 @@ class FakeAuthService implements AuthService {
   }) async {
     signUpCalls++;
     _completeAuthentication();
+  }
+
+  @override
+  Future<void> sendPasswordResetEmail(String email) async {
+    resetPasswordCalls++;
+    final error = authenticationError;
+    if (error != null) throw error;
+  }
+
+  @override
+  Future<AuthFlowResult> signInWithGoogle() async {
+    googleSignInCalls++;
+    return _completeSocialAuthentication();
+  }
+
+  @override
+  Future<AuthFlowResult> signInWithApple() async {
+    appleSignInCalls++;
+    return _completeSocialAuthentication();
+  }
+
+  AuthFlowResult _completeSocialAuthentication() {
+    final error = socialAuthenticationError;
+    if (error != null) throw error;
+    if (socialResult == AuthFlowResult.success) {
+      _isAuthenticated = true;
+      _controller.add(true);
+    }
+    return socialResult;
   }
 
   @override
@@ -58,6 +107,26 @@ class FakeAuthService implements AuthService {
   }
 
   Future<void> dispose() => _controller.close();
+}
+
+class MemoryOnboardingPreferences implements OnboardingPreferences {
+  MemoryOnboardingPreferences({this.completed = true});
+
+  bool completed;
+  int readCalls = 0;
+  int completeCalls = 0;
+
+  @override
+  Future<bool> isCompleted() async {
+    readCalls++;
+    return completed;
+  }
+
+  @override
+  Future<void> markCompleted() async {
+    completeCalls++;
+    completed = true;
+  }
 }
 
 class FakeCharacterChatService implements CharacterChatService {

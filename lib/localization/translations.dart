@@ -75,6 +75,64 @@ class Translations {
       'version': 'Versiyon',
       'developer': 'Geliştirici',
 
+      // Karşılama, tanıtım ve kimlik doğrulama
+      'skip': 'Atla',
+      'back': 'Geri',
+      'next': 'İleri',
+      'get_started': 'Dedektifliğe Başla',
+      'walkthrough_progress': '{total} adımın {current}. adımı',
+      'walkthrough_title_1': 'Dosya seni bekliyor',
+      'walkthrough_description_1':
+          'Cinayet dosyasını incele, olay yerini öğren ve ilk şüphelerini oluştur.',
+      'walkthrough_title_2': 'Şüphelileri sorgula',
+      'walkthrough_description_2':
+          'Her karakterle konuş. Cevaplarındaki ayrıntıları ve kaçamakları takip et.',
+      'walkthrough_title_3': 'Çelişkileri birleştir',
+      'walkthrough_description_3':
+          'İfadeleri karşılaştır, ipuçlarını değerlendir ve gerçeğe yaklaş.',
+      'walkthrough_title_4': 'Son kararını ver',
+      'walkthrough_description_4':
+          'Kanıtların yeterliyse katili seç. Kararın dosyanın sonucunu belirleyecek.',
+      'welcome_tagline':
+          'Şüphelileri sorgula, ipuçlarını birleştir ve katili ortaya çıkar.',
+      'welcome_feature_chat': 'Sorgula',
+      'welcome_feature_clues': 'İpucu Bul',
+      'welcome_feature_decide': 'Karar Ver',
+      'sign_in': 'Giriş Yap',
+      'create_account': 'Hesap Oluştur',
+      'welcome_back': 'Tekrar hoş geldin, Dedektif',
+      'create_detective_account': 'Dedektif hesabını oluştur',
+      'auth_sign_in_subtitle': 'Dosyalarına güvenli biçimde devam et.',
+      'auth_sign_up_subtitle': 'İlk soruşturmanı başlatmaya hazırlan.',
+      'email': 'E-posta',
+      'password': 'Şifre',
+      'confirm_password': 'Şifreyi doğrula',
+      'forgot_password': 'Şifremi unuttum',
+      'reset_email_sent': 'Şifre sıfırlama bağlantısı e-postana gönderildi.',
+      'continue_with_google': 'Google ile devam et',
+      'continue_with_apple': 'Apple ile devam et',
+      'or': 'veya',
+      'already_have_account': 'Zaten hesabın var mı? Giriş yap',
+      'no_account_yet': 'Hesabın yok mu? Hesap oluştur',
+      'show_password': 'Şifreyi göster',
+      'hide_password': 'Şifreyi gizle',
+      'email_required': 'E-posta adresini gir.',
+      'email_invalid': 'Geçerli bir e-posta adresi gir.',
+      'password_required': 'Şifreni gir.',
+      'password_too_short': 'Şifre en az 8 karakter olmalı.',
+      'passwords_do_not_match': 'Şifreler eşleşmiyor.',
+      'auth_error_invalid_credential':
+          'E-posta veya şifre hatalı. Bilgilerini kontrol et.',
+      'auth_error_email_in_use': 'Bu e-posta adresi zaten kullanılıyor.',
+      'auth_error_weak_password': 'Daha güçlü bir şifre seç.',
+      'auth_error_disabled': 'Bu hesap devre dışı bırakılmış.',
+      'auth_error_too_many_requests':
+          'Çok fazla deneme yapıldı. Bir süre sonra tekrar dene.',
+      'auth_error_network': 'Bağlantı kurulamadı. İnternetini kontrol et.',
+      'auth_error_provider_disabled':
+          'Bu giriş yöntemi henüz yapılandırılmamış.',
+      'auth_error_unknown': 'Giriş tamamlanamadı. Lütfen tekrar dene.',
+
       // Oyun sonucu
       'congratulations': '🎉 TEBRİKLER!',
       'wrong_guess': '😔 YANLIŞ TAHMİN',
@@ -217,6 +275,65 @@ class Translations {
           'Who is the Killer? - AI-powered detective game. Chat with characters to find the real killer!',
       'version': 'Version',
       'developer': 'Developer',
+
+      // Welcome, walkthrough and authentication
+      'skip': 'Skip',
+      'back': 'Back',
+      'next': 'Next',
+      'get_started': 'Start Investigating',
+      'walkthrough_progress': 'Step {current} of {total}',
+      'walkthrough_title_1': 'A case is waiting',
+      'walkthrough_description_1':
+          'Study the murder file, learn the crime scene, and form your first suspicions.',
+      'walkthrough_title_2': 'Question the suspects',
+      'walkthrough_description_2':
+          'Talk to every character. Watch for revealing details and evasive answers.',
+      'walkthrough_title_3': 'Connect contradictions',
+      'walkthrough_description_3':
+          'Compare statements, weigh the clues, and move closer to the truth.',
+      'walkthrough_title_4': 'Make your final call',
+      'walkthrough_description_4':
+          'When the evidence is strong enough, accuse the killer and close the case.',
+      'welcome_tagline':
+          'Question the suspects, connect the clues, and expose the killer.',
+      'welcome_feature_chat': 'Interrogate',
+      'welcome_feature_clues': 'Find Clues',
+      'welcome_feature_decide': 'Decide',
+      'sign_in': 'Sign In',
+      'create_account': 'Create Account',
+      'welcome_back': 'Welcome back, Detective',
+      'create_detective_account': 'Create your detective account',
+      'auth_sign_in_subtitle': 'Continue your cases securely.',
+      'auth_sign_up_subtitle': 'Get ready to open your first investigation.',
+      'email': 'Email',
+      'password': 'Password',
+      'confirm_password': 'Confirm password',
+      'forgot_password': 'Forgot password?',
+      'reset_email_sent': 'A password reset link was sent to your email.',
+      'continue_with_google': 'Continue with Google',
+      'continue_with_apple': 'Continue with Apple',
+      'or': 'or',
+      'already_have_account': 'Already have an account? Sign in',
+      'no_account_yet': 'No account yet? Create one',
+      'show_password': 'Show password',
+      'hide_password': 'Hide password',
+      'email_required': 'Enter your email address.',
+      'email_invalid': 'Enter a valid email address.',
+      'password_required': 'Enter your password.',
+      'password_too_short': 'Password must be at least 8 characters.',
+      'passwords_do_not_match': 'Passwords do not match.',
+      'auth_error_invalid_credential':
+          'The email or password is incorrect. Check your details.',
+      'auth_error_email_in_use': 'This email address is already in use.',
+      'auth_error_weak_password': 'Choose a stronger password.',
+      'auth_error_disabled': 'This account has been disabled.',
+      'auth_error_too_many_requests':
+          'Too many attempts. Try again a little later.',
+      'auth_error_network':
+          'Could not connect. Check your internet connection.',
+      'auth_error_provider_disabled':
+          'This sign-in method has not been configured yet.',
+      'auth_error_unknown': 'Sign-in could not be completed. Please try again.',
 
       // Game result
       'congratulations': '🎉 CONGRATULATIONS!',

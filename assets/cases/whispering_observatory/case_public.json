@@ -1,0 +1,204 @@
+{
+  "caseId": "whispering_observatory",
+  "titleEn": "The Whispering Observatory",
+  "titleTr": "Fısıltı Gözlemevi",
+  "descriptionEn": "At the remote Andean Peaks Observatory, Dr. Alistair Thorne is found dead in a locked dome. Interrogate the six remaining guests and uncover the truth.",
+  "descriptionTr": "Uzak Andean Peaks Gözlemevi'nde Dr. Alistair Thorne kilitli bir kubbede ölü bulunur. Kalan altı konuğu sorgula ve gerçeği ortaya çıkar.",
+  "victimEn": "Dr. Alistair Thorne",
+  "victimTr": "Dr. Alistair Thorne",
+  "crimeSceneEn": "Andean Peaks Observatory — Great Reflector Dome",
+  "crimeSceneTr": "Andean Peaks Gözlemevi — Büyük Yansıtıcı Kubbe",
+  "requiredAccusationClueIds": ["clue_07", "clue_10", "clue_11", "clue_17"],
+  "suspects": [
+    {
+      "id": "suspect_01",
+      "nameEn": "Dr. Elena Vance",
+      "nameTr": "Dr. Elena Vance",
+      "roleEn": "Lead Astrophysicist",
+      "roleTr": "Kıdemli Astrofizikçi",
+      "backgroundEn": "Fifteen-year collaborator whose name was omitted from the breakthrough announcement.",
+      "backgroundTr": "Buluş duyurusundan adı çıkarılan on beş yıllık iş arkadaşı.",
+      "personalityEn": "Clinical, precise, reserved",
+      "personalityTr": "Klinik, kesin, mesafeli",
+      "alibiEn": "Mess Hall at 22:45; quarters at 23:00",
+      "alibiTr": "22:45'te Yemekhane; 23:00'te odası",
+      "avatar": "👩‍🔬",
+      "color": "#c45c26"
+    },
+    {
+      "id": "suspect_02",
+      "nameEn": "Marcus Thorne",
+      "nameTr": "Marcus Thorne",
+      "roleEn": "Victim's estranged son",
+      "roleTr": "Kurbanın yabancılaşmış oğlu",
+      "backgroundEn": "Arrived uninvited seeking a financial settlement.",
+      "backgroundTr": "Maddi bir uzlaşma aramak için davetsiz geldi.",
+      "personalityEn": "Hostile, blunt, impatient",
+      "personalityTr": "Düşmanca, kaba, sabırsız",
+      "alibiEn": "In West Wing room with headphones",
+      "alibiTr": "Kulaklıkla Batı Kanadı odasında",
+      "avatar": "🧑",
+      "color": "#6b4c9a"
+    },
+    {
+      "id": "suspect_03",
+      "nameEn": "Suna Aksoy",
+      "nameTr": "Suna Aksoy",
+      "roleEn": "Postdoctoral researcher",
+      "roleTr": "Doktora sonrası araştırmacı",
+      "backgroundEn": "Protégé who discovered the body while delivering medicine.",
+      "backgroundTr": "İlaç götürürken cesedi bulan protégé.",
+      "personalityEn": "Anxious, deferential, brilliant",
+      "personalityTr": "Kaygılı, saygılı, parlak",
+      "alibiEn": "Quarters until 23:20, then dome with medicine",
+      "alibiTr": "23:20'ye kadar odası, sonra ilaçla kubbe",
+      "avatar": "👩‍💻",
+      "color": "#2a7a8a"
+    },
+    {
+      "id": "suspect_04",
+      "nameEn": "Julian Vane",
+      "nameTr": "Julian Vane",
+      "roleEn": "CEO, Vane Dynamics",
+      "roleTr": "Vane Dynamics CEO'su",
+      "backgroundEn": "Primary benefactor under corporate pressure.",
+      "backgroundTr": "Kurumsal baskı altındaki ana bağışçı.",
+      "personalityEn": "Polished, calculating, detached",
+      "personalityTr": "Cilalı, hesapçı, mesafeli",
+      "alibiEn": "West Wing suite reviewing reports",
+      "alibiTr": "Batı Kanadı süitinde rapor inceliyor",
+      "avatar": "🧔",
+      "color": "#8a7a2a"
+    },
+    {
+      "id": "suspect_05",
+      "nameEn": "Captain Silas Reed",
+      "nameTr": "Kaptan Silas Reed",
+      "roleEn": "Head of Security",
+      "roleTr": "Güvenlik Müdürü",
+      "backgroundEn": "Facility security lead who forced the bolted dome door.",
+      "backgroundTr": "Sürgülü kubbe kapısını zorlayan güvenlik şefi.",
+      "personalityEn": "Terse, disciplined, cautious",
+      "personalityTr": "Kısa, disiplinli, temkinli",
+      "alibiEn": "East Wing monitoring station",
+      "alibiTr": "Doğu Kanadı izleme istasyonu",
+      "avatar": "👮",
+      "color": "#3a5a3a"
+    },
+    {
+      "id": "suspect_06",
+      "nameEn": "Dr. Hugo Sterling",
+      "nameTr": "Dr. Hugo Sterling",
+      "roleEn": "Retired astronomer",
+      "roleTr": "Emekli gökbilimci",
+      "backgroundEn": "Former director and guest of honor.",
+      "backgroundTr": "Eski müdür ve onur konuğu.",
+      "personalityEn": "Gentle, nostalgic, protective",
+      "personalityTr": "Nazik, nostaljik, koruyucu",
+      "alibiEn": "Resting in West Wing quarters",
+      "alibiTr": "Batı Kanadı odasında dinleniyor",
+      "avatar": "🧓",
+      "color": "#7a6a5a"
+    }
+  ],
+  "clues": [
+    {
+      "id": "clue_01",
+      "titleEn": "Broken calibration lens",
+      "titleTr": "Kırık kalibrasyon merceği",
+      "descEn": "Optical shards near the telescope base.",
+      "descTr": "Teleskop kaidesinin yakınında optik parçalar."
+    },
+    {
+      "id": "clue_02",
+      "titleEn": "Smudged logbook",
+      "titleTr": "Karalanmış kayıt defteri",
+      "descEn": "An altered 11:00 AM security entry.",
+      "descTr": "Değiştirilmiş 11:00 güvenlik girişi."
+    },
+    {
+      "id": "clue_03",
+      "titleEn": "Severed radio wires",
+      "titleTr": "Kesilmiş telsiz kabloları",
+      "descEn": "Deliberate sabotage of emergency radio.",
+      "descTr": "Acil durum telsizinin kasıtlı sabotajı."
+    },
+    {
+      "id": "clue_04",
+      "titleEn": "Torn 1998 photograph",
+      "titleTr": "Yırtık 1998 fotoğrafı",
+      "descEn": "A damaged expedition photo linked to Hugo.",
+      "descTr": "Hugo ile bağlantılı hasarlı sefer fotoğrafı."
+    },
+    {
+      "id": "clue_05",
+      "titleEn": "High-altitude medicine",
+      "titleTr": "Yüksek irtifa ilacı",
+      "descEn": "Vial dropped near the body at discovery.",
+      "descTr": "Keşif sırasında cesedin yanında düşmüş ampul."
+    },
+    {
+      "id": "clue_07",
+      "titleEn": "Missing master key",
+      "titleTr": "Kayıp ana anahtar",
+      "descEn": "Master key missing from Silas's dock.",
+      "descTr": "Silas'ın yuvasından eksik ana anahtar."
+    },
+    {
+      "id": "clue_08",
+      "titleEn": "Satellite phone",
+      "titleTr": "Uydu telefonu",
+      "descEn": "Julian's hidden encrypted phone.",
+      "descTr": "Julian'ın gizli şifreli telefonu."
+    },
+    {
+      "id": "clue_10",
+      "titleEn": "Damp coat",
+      "titleTr": "Nemli palto",
+      "descEn": "Wet coat in East Wing locker.",
+      "descTr": "Doğu Kanadı dolabında ıslak palto."
+    },
+    {
+      "id": "clue_11",
+      "titleEn": "Remote bolt logs",
+      "titleTr": "Uzaktan sürgü kayıtları",
+      "descEn": "23:08 Emergency Atmospheric Bolt command.",
+      "descTr": "23:08 Acil Durum Atmosferik Sürgü komutu."
+    },
+    {
+      "id": "clue_12",
+      "titleEn": "Inheritance papers",
+      "titleTr": "Veraset belgeleri",
+      "descEn": "Marcus's debt and estate documents.",
+      "descTr": "Marcus'un borç ve miras belgeleri."
+    },
+    {
+      "id": "clue_14",
+      "titleEn": "Kitchen chemical",
+      "titleTr": "Mutfak kimyasalı",
+      "descEn": "Labeled vial that is a red herring.",
+      "descTr": "Etiketli şişe — yanlış iz."
+    },
+    {
+      "id": "clue_16",
+      "titleEn": "Argument recording",
+      "titleTr": "Tartışma kaydı",
+      "descEn": "Audio of Marcus and Alistair at 22:15.",
+      "descTr": "22:15'te Marcus ve Alistair ses kaydı."
+    },
+    {
+      "id": "clue_17",
+      "titleEn": "Catwalk footprints",
+      "titleTr": "İskele ayak izleri",
+      "descEn": "Two sets of footprints near the aperture.",
+      "descTr": "Açıklık yakınında iki set ayak izi."
+    },
+    {
+      "id": "clue_18",
+      "titleEn": "Weather lull logs",
+      "titleTr": "Hava durgunluğu kayıtları",
+      "descEn": "Sensors show a lull at 23:00, contradicting Hugo.",
+      "descTr": "Sensörler 23:00'te durgunluk gösteriyor; Hugo'yu çürütüyor."
+    }
+  ]
+}

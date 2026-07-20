@@ -1,0 +1,59 @@
+{
+  "routes": {
+    "suspect_01": {
+      "homeRoom": "location_03",
+      "waypoints": [
+        { "roomId": "location_03", "x": 500, "y": 180 },
+        { "roomId": "location_02", "x": 200, "y": 300 },
+        { "roomId": "location_03", "x": 620, "y": 400 }
+      ],
+      "speed": 55
+    },
+    "suspect_02": {
+      "homeRoom": "location_04",
+      "waypoints": [
+        { "roomId": "location_04", "x": 200, "y": 360 },
+        { "roomId": "location_03", "x": 150, "y": 300 },
+        { "roomId": "location_04", "x": 400, "y": 400 }
+      ],
+      "speed": 70
+    },
+    "suspect_03": {
+      "homeRoom": "location_05",
+      "waypoints": [
+        { "roomId": "location_05", "x": 300, "y": 360 },
+        { "roomId": "location_03", "x": 650, "y": 280 },
+        { "roomId": "location_02", "x": 500, "y": 350 }
+      ],
+      "speed": 50
+    },
+    "suspect_04": {
+      "homeRoom": "location_04",
+      "waypoints": [
+        { "roomId": "location_04", "x": 500, "y": 360 },
+        { "roomId": "location_03", "x": 300, "y": 450 },
+        { "roomId": "location_03", "x": 450, "y": 200 }
+      ],
+      "speed": 45
+    },
+    "suspect_05": {
+      "homeRoom": "location_05",
+      "waypoints": [
+        { "roomId": "location_05", "x": 400, "y": 300 },
+        { "roomId": "location_03", "x": 400, "y": 120 },
+        { "roomId": "location_06", "x": 280, "y": 240 },
+        { "roomId": "location_03", "x": 700, "y": 320 }
+      ],
+      "speed": 60
+    },
+    "suspect_06": {
+      "homeRoom": "location_04",
+      "waypoints": [
+        { "roomId": "location_04", "x": 180, "y": 400 },
+        { "roomId": "location_03", "x": 250, "y": 350 },
+        { "roomId": "location_04", "x": 300, "y": 300 }
+      ],
+      "speed": 30
+    }
+  }
+}

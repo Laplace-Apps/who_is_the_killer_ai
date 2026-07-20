@@ -7,14 +7,16 @@ import 'package:who_is_the_killer_ai/services/ai_chat_service.dart';
 import '../support/fakes.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('GameProvider', () {
-    test('starts a game with three suspects and persists it', () async {
+    test('starts a game with six suspects and persists it', () async {
       final persistence = MemoryGamePersistence();
       final provider = GameProvider(gamePersistence: persistence);
 
       await provider.startNewGame(LanguageProvider());
 
-      expect(provider.gameState?.characters, hasLength(3));
+      expect(provider.gameState?.characters, hasLength(6));
       expect(provider.currentCharacter, isNull);
       expect(provider.currentConversation, isEmpty);
       expect(persistence.saveCalls, 1);
@@ -43,7 +45,7 @@ void main() {
 
     test('restores saved progress and conversations', () async {
       final savedState = GameData.createNewGame()
-          .updateConversationForCharacter('Prof. Dr. Ahmet Yılmaz', const [
+          .updateConversationForCharacter('Dr. Elena Vance', const [
             'Dedektif: Merhaba',
           ]);
       final persistence = MemoryGamePersistence(savedGameState: savedState);

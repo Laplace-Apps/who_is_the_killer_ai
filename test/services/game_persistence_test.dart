@@ -22,7 +22,7 @@ void main() {
     final restoredState = await persistence.loadGameState();
 
     expect(restoredState?.storyTitle, gameState.storyTitle);
-    expect(restoredState?.characters, hasLength(3));
+    expect(restoredState?.characters, hasLength(6));
   });
 
   test('clears local and remote game state', () async {

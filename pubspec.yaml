@@ -47,6 +47,13 @@ dependencies:
   firebase_core: ^4.12.1
   firebase_auth: ^6.5.6
   cloud_firestore: ^6.7.1
+  google_sign_in: ^7.2.0
+  sign_in_with_apple: ^8.1.0
+  crypto: ^3.0.7
+  flutter_svg: ^2.3.0
+  firebase_app_check: ^0.4.5+2
+  flame: ^1.38.0
+  http: ^1.6.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -67,6 +74,19 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/logos/google_logo.svg
+    - assets/cases/whispering_observatory/map_layout.json
+    - assets/cases/whispering_observatory/npc_routes.json
+    - assets/cases/whispering_observatory/case_public.json
+    - assets/images/characters/
+    - assets/images/tiles/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Variable.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

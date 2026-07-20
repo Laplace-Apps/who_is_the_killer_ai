@@ -1,88 +1,127 @@
 import '../models/character.dart';
 import '../models/game_state.dart';
 import '../models/language.dart';
-import '../localization/translations.dart';
 
+/// Helpers for suggested questions and sync test fixtures.
+/// Runtime games should use [CaseContentRepository] via [GameProvider.startNewGame].
 class GameData {
   static GameState createNewGame([Language language = Language.turkish]) {
+    final isTr = language == Language.turkish;
     final characters = [
       Character(
-        name: Translations.getText('professor_name', language),
-        role: Translations.getText('professor_role', language),
-        background: Translations.getText('professor_background', language),
-        personality: Translations.getText('professor_personality', language),
-        alibi: 'Cinayet sırasında kütüphanede araştırma yapıyordum. Kütüphaneci beni gördü.',
-        motive: 'Kurban, onun araştırmasını çaldığını iddia ediyordu ve akademik itibarını tehdit ediyordu.',
+        id: 'suspect_01',
+        name: 'Dr. Elena Vance',
+        role: isTr ? 'Kıdemli Astrofizikçi' : 'Lead Astrophysicist',
+        background: isTr
+            ? 'On beş yıllık iş arkadaşı.'
+            : 'Fifteen-year collaborator.',
+        personality: isTr ? 'Klinik' : 'Clinical',
+        alibi: isTr ? 'Yemekhane / odası' : 'Mess Hall / quarters',
+        motive: '',
         isKiller: false,
-        avatar: '👨‍🏫',
+        avatar: '👩‍🔬',
+        colorValue: 0xFFC45C26,
       ),
       Character(
-        name: Translations.getText('housewife_name', language),
-        role: Translations.getText('housewife_role', language),
-        background: Translations.getText('housewife_background', language),
-        personality: Translations.getText('housewife_personality', language),
-        alibi: 'O akşam televizyon izliyordum. Komşular seslerimi duyabilir.',
-        motive: 'Kurban, onun oğlunun işini kaybetmesine neden olmuştu.',
-        isKiller: true,
-        avatar: '👩‍🦱',
+        id: 'suspect_02',
+        name: 'Marcus Thorne',
+        role: isTr ? 'Kurbanın oğlu' : "Victim's son",
+        background: isTr ? 'Davetsiz misafir.' : 'Uninvited guest.',
+        personality: isTr ? 'Düşmanca' : 'Hostile',
+        alibi: isTr ? 'Batı Kanadı' : 'West Wing',
+        motive: '',
+        isKiller: false,
+        avatar: '🧑',
+        colorValue: 0xFF6B4C9A,
       ),
       Character(
-        name: Translations.getText('guard_name', language),
-        role: Translations.getText('guard_role', language),
-        background: Translations.getText('guard_background', language),
-        personality: Translations.getText('guard_personality', language),
-        alibi: 'O akşam nöbetteydim. Giriş-çıkış kayıtlarım var.',
-        motive: 'Kurban ona borç para vermişti ve geri ödemek istemiyordu.',
+        id: 'suspect_03',
+        name: 'Suna Aksoy',
+        role: isTr ? 'Araştırmacı' : 'Researcher',
+        background: isTr ? 'Protégé.' : 'Protégé.',
+        personality: isTr ? 'Kaygılı' : 'Anxious',
+        alibi: isTr ? 'Doğu Kanadı' : 'East Wing',
+        motive: '',
         isKiller: false,
-        avatar: '👨‍💼',
+        avatar: '👩‍💻',
+        colorValue: 0xFF2A7A8A,
+      ),
+      Character(
+        id: 'suspect_04',
+        name: 'Julian Vane',
+        role: 'CEO',
+        background: isTr ? 'Bağışçı.' : 'Benefactor.',
+        personality: isTr ? 'Cilalı' : 'Polished',
+        alibi: isTr ? 'Batı Kanadı süit' : 'West Wing suite',
+        motive: '',
+        isKiller: false,
+        avatar: '🧔',
+        colorValue: 0xFF8A7A2A,
+      ),
+      Character(
+        id: 'suspect_05',
+        name: 'Captain Silas Reed',
+        role: isTr ? 'Güvenlik' : 'Security',
+        background: isTr ? 'Güvenlik şefi.' : 'Security chief.',
+        personality: isTr ? 'Disiplinli' : 'Disciplined',
+        alibi: isTr ? 'İzleme istasyonu' : 'Monitoring station',
+        motive: '',
+        isKiller: false,
+        avatar: '👮',
+        colorValue: 0xFF3A5A3A,
+      ),
+      Character(
+        id: 'suspect_06',
+        name: 'Dr. Hugo Sterling',
+        role: isTr ? 'Emekli gökbilimci' : 'Retired astronomer',
+        background: isTr ? 'Eski müdür.' : 'Former director.',
+        personality: isTr ? 'Nazik' : 'Gentle',
+        alibi: isTr ? 'Batı Kanadı' : 'West Wing',
+        motive: '',
+        isKiller: false,
+        avatar: '🧓',
+        colorValue: 0xFF7A6A5A,
       ),
     ];
 
     return GameState(
-      storyTitle: Translations.getText('story_title', language),
-      storyDescription: Translations.getText('story_description', language),
-      crimeScene: 'Elif Özkan\'ın evi - 3. kat, 302 numara',
-      victim: 'Elif Özkan - 45 yaşında, iş kadını',
+      storyTitle: isTr ? 'Fısıltı Gözlemevi' : 'The Whispering Observatory',
+      storyDescription: isTr
+          ? 'Andean Peaks Gözlemevi\'nde kilitli kubbe cinayeti.'
+          : 'A locked-dome murder at Andean Peaks Observatory.',
+      crimeScene: 'Andean Peaks Observatory',
+      victim: 'Dr. Alistair Thorne',
       characters: characters,
     );
   }
 
-  static List<String> getSuggestedQuestions([Language language = Language.turkish]) {
-    return [
-      Translations.getText('question_where_were_you', language),
-      Translations.getText('question_relationship', language),
-      Translations.getText('question_last_meeting', language),
-      Translations.getText('question_enmity', language),
-      Translations.getText('question_heard_anything', language),
-      Translations.getText('question_benefit', language),
-      Translations.getText('question_last_argument', language),
-      Translations.getText('question_with_who', language),
-      Translations.getText('question_debt', language),
-      Translations.getText('question_who_could', language),
+  static List<String> getSuggestedQuestions([
+    Language language = Language.turkish,
+  ]) {
+    if (language == Language.turkish) {
+      return const [
+        'Saat 23:00\'te neredeydiniz?',
+        'Alistair ile ilişkiniz nasıldı?',
+        'Güç kesintisi sırasında neredeydiniz?',
+        'Ana anahtar hakkında ne biliyorsunuz?',
+        'Kubbe kapısı nasıl kilitlendi?',
+        'Kimden şüpheleniyorsunuz?',
+      ];
+    }
+    return const [
+      'Where were you at 11:00 PM?',
+      'What was your relationship with Alistair?',
+      'Where were you during the power flicker?',
+      'What do you know about the master key?',
+      'How was the dome door locked?',
+      'Who do you suspect?',
     ];
   }
 
   static String getGameInstructions([Language language = Language.turkish]) {
-    return '''
-${Translations.getText('game_objective', language)}:
-${Translations.getText('game_objective_text', language)}
-
-${Translations.getText('how_to_play', language)}:
-${Translations.getText('how_to_play_1', language)}
-${Translations.getText('how_to_play_2', language)}
-${Translations.getText('how_to_play_3', language)}
-${Translations.getText('how_to_play_4', language)}
-
-${Translations.getText('clues', language)}:
-${Translations.getText('clues_1', language)}
-${Translations.getText('clues_2', language)}
-${Translations.getText('clues_3', language)}
-${Translations.getText('clues_4', language)}
-
-${Translations.getText('question_suggestions', language)}:
-${Translations.getText('question_1', language)}
-${Translations.getText('question_2', language)}
-${Translations.getText('question_3', language)}
-''';
+    if (language == Language.turkish) {
+      return 'Odaları gezin, şüphelilerle konuşun, kanıt toplayın ve suçlayın.';
+    }
+    return 'Explore rooms, talk to suspects, collect clues, and accuse.';
   }
 }

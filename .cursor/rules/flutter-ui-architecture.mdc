@@ -1,0 +1,17 @@
+---
+description: Preserve existing Flutter state and service architecture
+globs: lib/**/*.dart
+alwaysApply: false
+---
+
+# Flutter UI architecture
+
+- Keep `Provider` and `ChangeNotifierProvider` as the app's state-management mechanism during UI work.
+- Preserve `AuthGate` as the authentication boundary and its stream-driven signed-in/signed-out flow.
+- Keep services injected through constructors or the existing provider setup; do not instantiate production services inside UI widgets.
+- Preserve the interfaces and injected implementations for authentication, chat, and game persistence.
+- Read and watch providers with the existing `context.read`, `context.watch`, `Consumer`, and `Provider.of` patterns as appropriate.
+- Keep game-state loading and authentication orchestration outside purely presentational widgets.
+- UI-only changes must not replace navigation, state management, service wiring, or startup behavior.
+- Do not introduce Riverpod or `go_router` for UI changes.
+- Prefer focused widget extraction without moving business logic into the widget tree.

@@ -1,0 +1,17 @@
+---
+description: Keep Flutter UI semantic, localized, and reusable
+globs: lib/**/*.dart
+alwaysApply: false
+---
+
+# Flutter UI conventions
+
+- Use `Theme.of(context)`, `ColorScheme`, and semantic theme extensions for colors, typography, surfaces, and states.
+- Avoid new screen-local hardcoded colors or duplicated visual constants when a semantic theme value fits.
+- Route user-visible text through the existing `LanguageProvider` translation mechanism; do not add untranslated literals.
+- Add or update translation keys for every supported locale when UI copy changes.
+- Give interactive and meaningful visual elements appropriate Flutter `Semantics`, labels, hints, and states.
+- Preserve readable layouts with text scaling, safe areas, and platform-appropriate tap targets.
+- Extract repeated or independently meaningful UI into focused reusable widgets.
+- Keep one-off layout fragments local when extraction would only add indirection.
+- Reuse existing widgets and styling patterns before introducing new abstractions.

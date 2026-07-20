@@ -12,6 +12,11 @@
 .swiftpm/
 migrate_working_dir/
 
+# Local environment and bypass tokens
+.env
+.env.*
+!.env.example
+
 # IntelliJ related
 *.iml
 *.ipr
